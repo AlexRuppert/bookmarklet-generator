@@ -18,40 +18,34 @@ body, textarea
   background #fff
   color #333
   text-align center
-  font-family 'Tahoma', 'Helvetica Neue', sans-serif
+  font-family 'Segoe UI', 'Tahoma', 'Helvetica Neue', sans-serif
   line-height 1.3em
-
-.hidden
-  display none
 
 h1
   margin-top 1em
   margin-bottom 2em
   color primaryColor
-  font-size 1.2em
+  font-variant small-caps
+  font-size 1.5em
   line-height 1.2em
 
-textarea
-  padding 0.5em 0
-  min-width 1.5em
-  outline none
-  border none
-  border-top 2px solid primaryColor
-  border-bottom 2px solid primaryColor
-  border-radius 0
-  background none
-  font-family monospace
-
-#input-name
+textarea, #input-name
   padding 0.5em 0
   min-width 1.5em
   width 100%
   outline none
   border none
-  border none
   background none
   text-align center
-  font-family monospace
+
+textarea
+  overflow-x hidden
+  border-top 2px solid primaryColor
+  border-bottom 2px solid primaryColor
+  border-radius 0
+
+#input-name
+  border none
 
 button, a
   padding 0.5em
@@ -60,10 +54,16 @@ button, a
   color primaryColor
   text-decoration none
   letter-spacing 0.05em
-  font-size 0.8em
+  font-variant small-caps
   cursor pointer
 
+  &:hover
+    color lighten(primaryColor, 20%)
+
 #result
+  opacity 1
+  transition all 0.2s
+
   a
     min-width 50%
     min-height 2.6em
@@ -76,20 +76,30 @@ button, a
     &:hover
       background lighten(primaryColor, 10%)
 
-  svg
-    float left
-    margin-top 0.3em
-    height 1.2em
+    svg
+      float left
+      margin-top 0.3em
+      height 1.2em
 
-  div
-    margin-top 3em
-    padding 1em
+  #info
+    display flex
+    flex-direction column
+    align-items center
+    padding 0.5em 2em 2em
+    font-style italic
+    font-family cursive
+
+    svg
+      display block
+      margin-left -5em
+      height 5em
 
 .clear-container
   position relative
   height 6.5em
 
 #clear
+  margin-top -1px
   padding 0.2em 1em
   border 2px solid primaryColor
   border-top none
@@ -97,3 +107,9 @@ button, a
   border-top-left-radius 0
   border-top-right-radius 0
   background transparent
+
+.hidden
+  display none
+
+.opaque
+  opacity 0 !important

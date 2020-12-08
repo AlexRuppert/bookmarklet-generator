@@ -12,18 +12,29 @@ html(lang='en')
     main
       input#input-name(placeholder='Enter Name...')
       textarea#input(
-          rows='4'
-          placeholder='Enter JavaScript...'
-          spellcheck='false')
+        rows='3'
+        placeholder='Enter JavaScript...'
+        spellcheck='false'
+      )
       .clear-container
         button#clear × Clear
-      #result
+      #result.opaque
         a(href='#')
-          svg(xmlns='http://www.w3.org/2000/svg' viewBox="0 0 100 100")
-            path(stroke='#fff' stroke-linejoin='round' stroke-width='8' fill='#fff' d='m15,10h70v80l-35,-25l-35,25z')
           span Bookmark Me
-        div Drag &amp; drop the bookmarklet into your bookmark bar.
+        #info
+          svg(
+            fill='none'
+            stroke='#0070ff'
+            stroke-width='1.5'
+            stroke-linecap='round'
+            stroke-linejoin='round'
+            viewBox='0 0 100 100'
+            xmlns='http://www.w3.org/2000/svg'
+          )
+            path(d='m24 93c-0.9-28 15-52 42-79')
+            path(d='m53 16c7-2.6 14-6 20-9-4 9-6 17-5 21')
+          span Drag &amp; drop the bookmarklet into your bookmark bar.
       .bottom
-        a#share(href='#') Share Link
+        a#share.opaque(href='#') Share Link
     script.
       require("./scripts/index.js");

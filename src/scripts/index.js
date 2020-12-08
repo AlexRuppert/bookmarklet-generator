@@ -11,54 +11,77 @@ window.onload = () => {
     }
   }
 
-  const [inputName, input, link, linkText, clear, share] = [
+  const [
+    nameInput,
+    scriptInput,
+    resultContainer,
+    link,
+    linkText,
+    clear,
+    share,
+  ] = [
     '#input-name',
     'textarea',
+    '#result',
     '#result a',
     '#result a span',
     '#clear',
     '#share',
   ].map((el) => document.querySelector(el))
-  inputName.focus()
+  nameInput.focus()
 
   clear.addEventListener('click', () => {
-    clearInput()
+    clearScript()
   })
 
   const createBookmarklet = () => {
-    const value = input.value
-    const name = inputName.value
-    link.href = `javascript:(()=>(${value}))()`
+    const value = scriptInput.value
+    const name = nameInput.value
+    link.href = `javascript:(()=>{${value}})()`
     linkText.innerText = name || 'Bookmark Me'
     const url = new URL(window.location.href)
-    url.searchParams.set('q', value)
+    url.searchParams.set('script', value)
+    url.searchParams.set('name', name)
+
     share.href = url
+    toggleResults(value.trim().length > 0)
   }
-  const setInputName = (value) => {
+  const setName = (value) => {
     if (value != null) {
-      inputName.value = value
+      nameInput.value = value
+      createBookmarklet()
     }
   }
-  const clearInput = () => {
-    setInputName('')
-    setInput('')
-    inputName.focus()
-  }
-  const setInput = (value) => {
+
+  const setScript = (value) => {
     if (value != null) {
-      input.value = value
+      scriptInput.value = value
+      createBookmarklet()
     }
+  }
+  const clearScript = () => {
+    setName('')
+    setScript('')
+    nameInput.focus()
+  }
+
+  const toggleResults = (isVisible) => {
+    const action = isVisible ? 'remove' : 'add'
+    resultContainer.classList[action]('opaque')
+    share.classList[action]('opaque')
   }
 
   const updateFromUrl = () => {
-    setInput(new URL(window.location.href).searchParams.get('q'))
+    const url = new URL(window.location.href)
+    setScript(url.searchParams.get('script'))
+    setName(url.searchParams.get('name'))
   }
 
-  ;[input, inputName].forEach((el) =>
+  ;[scriptInput, nameInput].forEach((el) =>
     el.addEventListener('input', debounce(createBookmarklet, 100)),
   )
 
-  clearInput()
+  clearScript()
   updateFromUrl()
   window.addEventListener('locationchange', updateFromUrl)
 }
