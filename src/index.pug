@@ -10,19 +10,20 @@ html(lang='en')
   body
     h1 Bookmarklet Generator
     main
+      input#input-name(placeholder='Enter Name...')
       textarea#input(
-          type='text'
           rows='4'
-          placeholder='Enter JavaScript here...'
+          placeholder='Enter JavaScript...'
           spellcheck='false')
       .clear-container
         button#clear × Clear
       #result
         a(href='#')
           svg(xmlns='http://www.w3.org/2000/svg' viewBox="0 0 100 100")
-            path(stroke='#fff' stroke-linejoin='round' stroke-width='8' fill='#fff' d='M15,10h70v80l-35,-35l-35,35z')
+            path(stroke='#fff' stroke-linejoin='round' stroke-width='8' fill='#fff' d='m15,10h70v80l-35,-25l-35,25z')
           span Bookmark Me
         div Drag &amp; drop the bookmarklet into your bookmark bar.
-      
+      .bottom
+        a#share(href='#') Share Link
     script.
       require("./scripts/index.js");
