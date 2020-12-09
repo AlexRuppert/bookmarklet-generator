@@ -1,4 +1,4 @@
-primaryColor = #0070ff
+primaryColor = #005dd6
 
 *, *::before, *::after
   box-sizing border-box
@@ -21,6 +21,9 @@ body, textarea
   font-family 'Segoe UI', 'Tahoma', 'Helvetica Neue', sans-serif
   line-height 1.3em
 
+main
+  max-width 640px
+
 h1
   margin-top 1em
   margin-bottom 2em
@@ -32,6 +35,7 @@ h1
 textarea, #input-name
   padding 0.5em 0
   min-width 1.5em
+  min-height 3em
   width 100%
   outline none
   border none
@@ -69,7 +73,7 @@ button, a
     min-height 2.6em
     border-radius 5px
     border-radius 5px
-    background #0070ff
+    background primaryColor
     box-shadow 1px 1px 5px rgba(0, 0, 0, 0.5)
     color #fff
 
@@ -99,13 +103,7 @@ button, a
   height 6.5em
 
 #clear
-  margin-top -1px
-  padding 0.2em 1em
-  border 2px solid primaryColor
-  border-top none
-  border-radius 5px
-  border-top-left-radius 0
-  border-top-right-radius 0
+  min-height 3em
   background transparent
 
 .hidden
@@ -113,3 +111,7 @@ button, a
 
 .opaque
   opacity 0 !important
+
+.displaced
+  position absolute
+  top -900px
