@@ -20,9 +20,9 @@ html(lang='en')
         spellcheck='false'
       )
       .clear-container
-        button#clear × Clear
+        button#clear.opaque × Clear
       #result.opaque
-        a(href='#')
+        a(href='https://en.wikipedia.org/wiki/Bookmarklet')
           span Bookmark Me
         #info
           svg(
@@ -36,8 +36,12 @@ html(lang='en')
           )
             path(d='m24 93c-0.9-28 15-52 42-79')
             path(d='m53 16c7-2.6 14-6 20-9-4 9-6 17-5 21')
-          span Drag &amp; drop the bookmarklet into your bookmark bar.
-      .bottom
-        a#share.opaque(href='#') Share Link
+          span Drag &amp; drop the
+            a(href='') bookmarklet
+            | into your bookmarks bar <br>
+            | and use it like a bookmark.
+    .bottom
+      a#share.opaque(href='#') Shareable Link
+      a(href='https://github.com/AlexRuppert/bookmarklet-generator') About
     script.
       require("./scripts/index.js");

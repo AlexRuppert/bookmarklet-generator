@@ -68,6 +68,7 @@ window.onload = () => {
   const toggleResults = (isVisible) => {
     const action = isVisible ? 'remove' : 'add'
     resultContainer.classList[action]('opaque')
+    clear.classList[action]('opaque')
     share.classList[action]('opaque')
   }
 
