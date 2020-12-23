@@ -5,4 +5,5 @@ to generate [bookmarklets](https://en.wikipedia.org/wiki/Bookmarklet).
 
 # Build
 `npm run dev`
+
 `npm run build`

@@ -14,19 +14,23 @@ window.onload = () => {
   const [
     nameInput,
     scriptInput,
+    cssInput,
     resultContainer,
     link,
     linkText,
     clear,
     share,
+    toggleAdvanced,
   ] = [
     '#input-name',
-    'textarea',
+    '#input',
+    '#css',
     '#result',
     '#result a',
     '#result a span',
     '#clear',
     '#share',
+    '#toggle-advanced',
   ].map((el) => document.querySelector(el))
   nameInput.focus()
 
@@ -34,51 +38,64 @@ window.onload = () => {
     clearScript()
   })
 
+  toggleAdvanced.addEventListener('click', () => {
+    cssInput.classList.toggle('hidden')
+  })
+
   const createBookmarklet = () => {
-    const value = scriptInput.value
-    const name = nameInput.value
-    link.href = `javascript:(()=>{${value}})()`
-    linkText.innerText = name || 'Bookmark Me'
+    let script = scriptInput.value.trim()
+    const css = cssInput.value.trim()
+    const name = nameInput.value.trim()
+
     const url = new URL(window.location.href)
-    url.searchParams.set('script', value)
+    url.searchParams.set('script', script)
+    url.searchParams.set('css', css)
     url.searchParams.set('name', name)
 
+    if (css.length > 0)
+      script =
+        `const style=document.createElement('style');style.textContent=\`${css}\`;document.head.append(style);` +
+        script
+
+    link.href = `javascript:(()=>{${script}})()`
+    linkText.innerText = name || 'Bookmark Me'
+
     share.href = url
-    toggleResults(value.trim().length > 0)
+    toggleResults(script.length > 0)
   }
-  const setName = (value) => {
+
+  const setInput = (input, value) => {
     if (value != null) {
-      nameInput.value = value
+      input.value = value
       createBookmarklet()
     }
   }
 
-  const setScript = (value) => {
-    if (value != null) {
-      scriptInput.value = value
-      createBookmarklet()
-    }
-  }
   const clearScript = () => {
-    setName('')
-    setScript('')
+    ;[nameInput, scriptInput, scriptInput].forEach((el) => setInput(el, ''))
     nameInput.focus()
   }
 
   const toggleResults = (isVisible) => {
     const action = isVisible ? 'remove' : 'add'
-    resultContainer.classList[action]('opaque')
-    clear.classList[action]('opaque')
-    share.classList[action]('opaque')
+    ;[resultContainer, clear, share].forEach((el) =>
+      el.classList[action]('opaque'),
+    )
   }
 
   const updateFromUrl = () => {
     const url = new URL(window.location.href)
-    setScript(url.searchParams.get('script'))
-    setName(url.searchParams.get('name'))
+    const cssParam = url.searchParams.get('css')
+    setInput(scriptInput, url.searchParams.get('script'))
+    setInput(cssInput, cssParam)
+    setInput(nameInput, url.searchParams.get('name'))
+
+    if (cssParam && cssParam.trim().length) {
+      cssInput.classList.remove('hidden')
+    }
   }
 
-  ;[scriptInput, nameInput].forEach((el) =>
+  ;[scriptInput, nameInput, cssInput].forEach((el) =>
     el.addEventListener('input', debounce(createBookmarklet, 100)),
   )
 

@@ -14,15 +14,21 @@ html(lang='en')
       label.displaced(for='input-name') Name
       label.displaced(for='input') JavaScript
       input#input-name(placeholder='Enter Name...')
+      textarea#css.hidden(
+        rows='3'
+        placeholder='Enter CSS...'
+        spellcheck='false'
+      )
       textarea#input(
         rows='3'
         placeholder='Enter JavaScript...'
         spellcheck='false'
       )
+
       .clear-container
         button#clear.opaque × Clear
       #result.opaque
-        a(href='https://en.wikipedia.org/wiki/Bookmarklet')
+        a(href='#')
           span Bookmark Me
         #info
           svg(
@@ -37,11 +43,12 @@ html(lang='en')
             path(d='m24 93c-0.9-28 15-52 42-79')
             path(d='m53 16c7-2.6 14-6 20-9-4 9-6 17-5 21')
           span Drag &amp; drop the
-            a(href='') bookmarklet
+            a(href='https://en.wikipedia.org/wiki/Bookmarklet') bookmarklet
             | into your bookmarks bar <br>
             | and use it like a bookmark.
     .bottom
       a#share.opaque(href='#') Shareable Link
       a(href='https://github.com/AlexRuppert/bookmarklet-generator') About
+      a#toggle-advanced(href='javascript:void(0)') Advanced
     script.
       require("./scripts/index.js");
