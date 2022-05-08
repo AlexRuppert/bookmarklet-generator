@@ -14,14 +14,8 @@
   import Tabs from './components/Tabs.svelte'
   import { mdiClose } from '@mdi/js'
   import Button from './components/Button.svelte'
-  $name = '🎥 Video Speed'
+
   let activeEditorTab
-  $scriptRaw = `function onDrag(e) {
-  let test = 1 + 1;
-}`
-  $cssRaw = `a .b {
-  border: 1px solid red;
-}`
 
   let dragState = {
     dragging: false,
