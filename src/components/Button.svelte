@@ -1,6 +1,6 @@
 <script lang="ts">
   import SvgIcon from './SvgIcon.svelte'
-
+  export let primary = false
   export let icon = ''
   export let text = ''
 </script>
@@ -8,6 +8,8 @@
 <button
   on:click
   class="text-gray-900 py-1 flex rounded-lg items-center px-2 space-x-1 focus:(outline-none) relative"
+  class:text-blue-600={primary}
+  class:font-semibold={primary}
 >
   {#if icon}
     <span class="w-4 h-4 inline-block "><SvgIcon d={icon} /></span>

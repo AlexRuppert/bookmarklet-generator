@@ -27,6 +27,13 @@
     dispatch('dragEnd', {
       e,
     })
+
+    if (e.dataTransfer.dropEffect === 'copy' && e.clientY < 5) {
+      dispatch('bookmarked', {
+        e,
+      })
+    }
+    console.log(e)
   }
   const dispatch = createEventDispatcher()
 

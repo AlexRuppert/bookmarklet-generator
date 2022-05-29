@@ -14,6 +14,7 @@
   import Tabs from './components/Tabs.svelte'
   import { mdiClose } from '@mdi/js'
   import Button from './components/Button.svelte'
+  import { isMac } from './logic/utils'
 
   let activeEditorTab
 
@@ -33,6 +34,7 @@
     dragState.dragging = false
   }
 
+  function onBookmarked(e) {}
   const throttledOnDrag = throttle(3, onDrag)
 </script>
 
@@ -44,19 +46,55 @@
       href={$bookmarkletLink}
       on:drag={throttledOnDrag}
       on:dragEnd={onDragEnd}
+      on:bookmarked={onBookmarked}
     />
   </div>
-  <div class="justify-center font-light transform text-center" />
+  {#if !$editMode}
+    <div
+      class="-mt-24 flex flex-col justify-center text-center gap-3 cursive"
+    >
+      <div class="text-xl font-semibold mb-16">
+        <div>
+          to your Bookmarks bar to create a <abbr
+            title="Bookmarklets are bookmarks with commands that can be run by clicking on them."
+            ><a href="https://en.wikipedia.org/wiki/Bookmarklet">Bookmarklet</a
+            ></abbr
+          >
+        </div>
+      </div>
+      <div class="space-y-2">
+        <div class="">
+          <div>
+            <abbr
+              title="A bookmarks bar, sometimes called favorites bar, allows quick access to your bookmarks and supports drag & drop."
+            >
+              <a
+                href="https://duckduckgo.com/?q=what+is+a+bookmarks+bar&t=h_&ia=web"
+                target="_blank"
+                rel="noopener noreferrer">Bookmarks bar</a
+              >
+            </abbr> not visible?
+          </div>
+          <div>Try</div>
+        </div>
+        <div>
+          <kbd>{isMac ? '⇧' : 'shift'}</kbd> + <kbd>{isMac ? '⌘' : 'ctrl'}</kbd>
+          +
+          <kbd>B</kbd>
+        </div>
+      </div>
+    </div>
+  {/if}
 </div>
 {#if $editMode}
-  <div class="relative px-10 z-10 space-y-5">
+  <div class="-mt-32 relative px-10 z-10 space-y-5 justify-center flex flex-col">
     <div class="absolute right-10 top-0">
       <Button icon={mdiClose} on:click={() => ($editMode = false)} />
     </div>
 
-    <div class="flex flex-col justify-start">
+    <div class="self-center flex flex-col justify-center">
       <label
-        class="block select-none text-left font-normal mb-1 pl-3"
+        class="block select-none text-center font-normal mb-1"
         for="name">Name</label
       >
       <input
@@ -86,5 +124,22 @@
   :root {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
       Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  }
+  :global(kbd) {
+    @apply font-sans border border-opacity-20 bg-gray-100 px-2 py-1 rounded shadow-sm;
+  }
+  :global(abbr) {
+    @apply underline-offset-1 relative mr-2 !cursor-help;
+  }
+  :global(abbr > a) {
+    @apply cursor-help;
+  }
+  :global(abbr::after) {
+    content: '?';
+    @apply text-xs -bottom-1 absolute cursor-help;
+  }
+  .cursive {
+    font-family: 'ink free', 'Bradley Hand itc', 'Marker Felt',
+      'Marker Felt Thin', sans-serif;
   }
 </style>

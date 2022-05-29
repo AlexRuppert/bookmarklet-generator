@@ -3,28 +3,17 @@
   import javascript from 'highlight.js/lib/languages/javascript'
   import css from 'highlight.js/lib/languages/css'
   import 'highlight.js/styles/github.css'
-  import beautify from 'simply-beautiful'
+
   hljs.registerLanguage('javascript', javascript)
   hljs.registerLanguage('css', css)
-
-  export function formatScript(code) {
-    return beautify.js(code, {
-      indent_size: 2,
-    })
-  }
-
-  export function formatCss(code) {
-    return beautify.css(code, {
-      indent_size: 2,
-    })
-  }
 </script>
 
 <script lang="ts">
   import { CodeJar } from 'codejar'
   import { onMount } from 'svelte'
   import Button from './Button.svelte'
-  import { mdiFormatIndentIncrease, mdiRedo, mdiUndo } from '@mdi/js'
+  import { mdiFormatIndentIncrease } from '@mdi/js'
+  import { formatCss, formatScript } from '../logic/formatting'
   export let code
   export let lang = 'javascript'
   let jar
@@ -35,7 +24,7 @@
   }
   onMount(() => {
     jar = CodeJar(editorElement, highlight)
-    jar.onUpdate((c) => {
+    jar.onUpdate(c => {
       code = c
     })
   })

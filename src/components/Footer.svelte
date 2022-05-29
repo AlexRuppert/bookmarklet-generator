@@ -8,9 +8,10 @@
   class="fixed z-20 bottom-0 py-2 justify-center flex items-center w-full left-0 right-0 gap-3 bg-white shadow"
 >
   <Button
+    primary
     text="Edit"
     icon={mdiNoteEditOutline}
-    on:click={() => ($editMode = true)}
+    on:click={() => ($editMode = !$editMode)}
   />
   <Button
     text="Copy Link"

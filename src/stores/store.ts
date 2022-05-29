@@ -3,13 +3,14 @@ import { writable, readable, get } from 'svelte/store'
 import { debounce } from 'throttle-debounce'
 import { getParametersFromUrl, setParametersToUrl } from '../logic/url'
 import { getBookmarkletLink } from '../logic/bookmarklet'
+import { formatCss, formatScript } from '../logic/formatting'
 export const name = writable('')
 export const script = writable('')
 export const css = writable('')
 export const bookmarkletLink = writable('')
 export const scriptRaw = writable('')
 export const cssRaw = writable('')
-export const editMode = writable(true)
+export const editMode = writable(false)
 
 const updateUrlParameters = debounce(500, setParametersToUrl)
 const updateBookmarklet = debounce(300, setBookmarkletLink)
@@ -43,3 +44,5 @@ const startParameters = getParametersFromUrl()
 name.set(startParameters.name)
 script.set(startParameters.script)
 css.set(startParameters.css)
+scriptRaw.set(formatScript(startParameters.script))
+cssRaw.set(formatCss(startParameters.css))
