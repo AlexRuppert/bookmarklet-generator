@@ -2,10 +2,12 @@
   import DragButton from './components/DragButton.svelte'
   import { throttle } from 'throttle-debounce'
   import DragArrowHelper from './components/DragArrowHelper.svelte'
-  import Editor from './components/CodeEditor.svelte'
+
   import {
     cssRaw,
+    css,
     scriptRaw,
+    script,
     name,
     bookmarkletLink,
     editMode,
@@ -16,7 +18,8 @@
   import Button from './components/Button.svelte'
   import { isMac } from './logic/utils'
 
-  let activeEditorTab
+  let activeEditorTab: string
+  let Editor
 
   let dragState = {
     dragging: false,
@@ -36,6 +39,19 @@
 
   function onBookmarked(e) {}
   const throttledOnDrag = throttle(3, onDrag)
+
+  async function loadEditor() {
+    const { formatScript, formatCss } = await import('./logic/formatting')
+    scriptRaw.set(formatScript($script))
+    cssRaw.set(formatCss($css))
+    Editor = Editor || (await import('./components/CodeEditor.svelte')).default
+  }
+
+  editMode.subscribe(value => {
+    if (value) {
+      loadEditor()
+    }
+  })
 </script>
 
 <div class="mr-auto ml-auto max-w-sm py-4">
@@ -50,10 +66,8 @@
     />
   </div>
   {#if !$editMode}
-    <div
-      class="-mt-24 flex flex-col justify-center text-center gap-3 cursive"
-    >
-      <div class="text-xl font-semibold mb-16">
+    <div class="flex flex-col -mt-24 text-center gap-3 justify-center cursive">
+      <div class="font-semibold text-xl mb-16">
         <div>
           to your Bookmarks bar to create a <abbr
             title="Bookmarklets are bookmarks with commands that can be run by clicking on them."
@@ -86,20 +100,21 @@
     </div>
   {/if}
 </div>
-{#if $editMode}
-  <div class="-mt-32 relative px-10 z-10 space-y-5 justify-center flex flex-col">
-    <div class="absolute right-10 top-0">
+{#if $editMode && Editor}
+  <div
+    class="flex flex-col space-y-5 -mt-32 px-10 z-10 relative justify-center"
+  >
+    <div class="top-0 right-10 absolute">
       <Button icon={mdiClose} on:click={() => ($editMode = false)} />
     </div>
 
-    <div class="self-center flex flex-col justify-center">
-      <label
-        class="block select-none text-center font-normal mb-1"
-        for="name">Name</label
+    <div class="flex flex-col self-center justify-center">
+      <label class="font-normal text-center mb-1 block select-none" for="name"
+        >Name</label
       >
       <input
         type="text"
-        class="px-3 py-2 border rounded-md max-w-96"
+        class="border rounded-md max-w-96 py-2 px-3"
         spellcheck="false"
         autocomplete="none"
         bind:value={$name}
@@ -108,11 +123,15 @@
 
     <div>
       <Tabs bind:activeTab={activeEditorTab} tabs={['Script', 'Style']} />
-      <div class="shadow-md bg-light-150 rounded-b-md">
+      <div class="rounded-b-md bg-light-150 shadow-md">
         {#if activeEditorTab === 'Script'}
-          <Editor bind:code={$scriptRaw} lang="javascript" />
+          <svelte:component
+            this={Editor}
+            bind:code={$scriptRaw}
+            lang="javascript"
+          />
         {:else}
-          <Editor bind:code={$cssRaw} lang="css" />
+          <svelte:component this={Editor} bind:code={$cssRaw} lang="css" />
         {/if}
       </div>
     </div>
@@ -126,17 +145,17 @@
       Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   }
   :global(kbd) {
-    @apply font-sans border border-opacity-20 bg-gray-100 px-2 py-1 rounded shadow-sm;
+    @apply border rounded font-sans bg-gray-100 border-opacity-20 shadow-sm py-1 px-2;
   }
   :global(abbr) {
-    @apply underline-offset-1 relative mr-2 !cursor-help;
+    @apply mr-2 relative underline-offset-1 !cursor-help;
   }
   :global(abbr > a) {
     @apply cursor-help;
   }
   :global(abbr::after) {
     content: '?';
-    @apply text-xs -bottom-1 absolute cursor-help;
+    @apply cursor-help text-xs -bottom-1 absolute;
   }
   .cursive {
     font-family: 'ink free', 'Bradley Hand itc', 'Marker Felt',

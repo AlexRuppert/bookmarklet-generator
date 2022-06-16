@@ -4,12 +4,7 @@ export function minifyCss(code: string): string {
   return code.replace(/\n/g, '').replace(/\s\s+/g, ' ')
 }
 
-const excludeTokens = [
-  'SingleLineComment',
-  'MultiLineComment',
-  'WhiteSpace',
-  'LineTerminatorSequence',
-]
+const excludeTokens = ['SingleLineComment', 'MultiLineComment', 'WhiteSpace']
 const punctuatorsNeedSemicolon = /[\)\]\}]/
 
 export function minifyJs(code: string): string {
@@ -24,20 +19,21 @@ export function minifyJs(code: string): string {
         t.value += ' '
       }
       if (
+        t.type === 'IdentifierName' &&
+        arr[i + 1]?.type === 'LineTerminatorSequence'
+      ) {
+        t.value += ';'
+      }
+      if (t.type === 'LineTerminatorSequence') t.value = ''
+      if (
         (t.type.includes('Literal') ||
           t.type.includes('Template') ||
           (t.type === 'Punctuator' &&
             punctuatorsNeedSemicolon.test(t.value))) &&
-        arr[i + 1]?.type === 'IdentifierName'
+        arr[i + 1]?.type === 'LineTerminatorSequence' &&
+        arr[i + 2]?.type !== 'Punctuator'
       ) {
         t.value += ';'
-      }
-      if (
-        t.type === 'Punctuator' &&
-        arr[i + 1]?.type === 'Punctuator' &&
-        punctuatorsNeedSemicolon.test(arr[i + 1].value)
-      ) {
-        t.value = ''
       }
 
       return t.value

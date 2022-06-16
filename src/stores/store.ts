@@ -1,9 +1,8 @@
 import { minifyCss, minifyJs } from '../logic/minify'
-import { writable, readable, get } from 'svelte/store'
+import { writable,  get } from 'svelte/store'
 import { debounce } from 'throttle-debounce'
 import { getParametersFromUrl, setParametersToUrl } from '../logic/url'
 import { getBookmarkletLink } from '../logic/bookmarklet'
-import { formatCss, formatScript } from '../logic/formatting'
 export const name = writable('')
 export const script = writable('')
 export const css = writable('')
@@ -44,5 +43,5 @@ const startParameters = getParametersFromUrl()
 name.set(startParameters.name)
 script.set(startParameters.script)
 css.set(startParameters.css)
-scriptRaw.set(formatScript(startParameters.script))
-cssRaw.set(formatCss(startParameters.css))
+
+

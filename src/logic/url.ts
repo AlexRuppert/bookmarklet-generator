@@ -11,9 +11,11 @@ export function getParametersFromUrl() {
 
 export function setParametersToUrl(parameters: { [s: string]: string }) {
   const urlSearchParams = new URLSearchParams(window.location.search)
-  Object.entries(parameters).forEach(([key, value]) => {
-    urlSearchParams.set(key, value)
-  })
+  Object.entries(parameters)
+    .filter(([key, value]) => value.length > 0)
+    .forEach(([key, value]) => {
+      urlSearchParams.set(key, value)
+    })
   const url = new URL(window.location.href)
   url.search = urlSearchParams.toString()
   if (url.toString() !== window.location.toString())
