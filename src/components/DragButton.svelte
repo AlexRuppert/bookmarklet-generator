@@ -48,20 +48,20 @@
 <div class="relative block">
   <a
     draggable="true"
-    class="rounded-xl items-center flex flex-col h-min bg-blue-700 font-semibold text-white text-lg tracking-wider min-w-5 min-h-7 py-3  transition-all duration-200 inline-block hover:bg-blue-600"
+    class="rounded-xl flex flex-col font-semibold h-min bg-blue-700 text-white text-lg tracking-wider min-w-5 min-h-7 transition-all  duration-200 items-center inline-block overflow-y-hidden hover:bg-blue-600"
     class:hidden={dragging}
     {href}
     on:dragstart={dragStart}
     on:dragend={dragEnd}
     on:drag={drag}
   >
-    <div class="grabber px-5">
-      <span class="inline-block w-4 h-4 mr-2 "
+    <div class="px-5 pt-3 grabber">
+      <span class="h-4 mr-2 w-4 inline-block "
         ><SvgIcon d={mdiHandBackRight} /></span
       >
     </div>
     <div
-      class="text-sm mt-2 font-normal max-w-56 whitespace-nowrap overflow-hidden overflow-ellipsis border-t-2 w-full min-h-8 px-5 pt-2 text-center"
+      class="bg-white font-normal h-full mt-2  text-black text-sm text-center w-full min-h-8 max-w-56 px-5 pt-2 pb-3 whitespace-nowrap overflow-hidden overflow-ellipsis"
     >
       {title}
     </div>
@@ -82,7 +82,7 @@
     --tw-shadow-color: 30, 58, 138;
     box-shadow: 0 7px 6.5px -2px rgba(var(--tw-shadow-color), 0.3),
       0 3px 5px -1px rgba(var(--tw-shadow-color), 0.1);
-    transform: translateY(-1px);
+    
   }
   a:active {
     cursor: grabbing;

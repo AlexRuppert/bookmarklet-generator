@@ -17,10 +17,12 @@
   import { mdiClose } from '@mdi/js'
   import Button from './components/Button.svelte'
   import { isMac } from './logic/utils'
+  import Toast from './components/Toast.svelte'
 
   let activeEditorTab: string
   let Editor
-
+  let showToast
+  let bookmarked = false
   let dragState = {
     dragging: false,
     clientX: 0,
@@ -37,7 +39,10 @@
     dragState.dragging = false
   }
 
-  function onBookmarked(e) {}
+  function onBookmarked(e) {
+    showToast()
+    bookmarked = true
+  }
   const throttledOnDrag = throttle(3, onDrag)
 
   async function loadEditor() {
@@ -55,8 +60,11 @@
 </script>
 
 <div class="mr-auto ml-auto max-w-sm py-4">
+  <Toast bind:show={showToast}
+    ><span class="font-semibold">Bookmarklet added!</span>
+  </Toast>
   <DragArrowHelper {dragState} />
-  <div class="flex h-80 justify-center items-center">
+  <div class="flex h-80 justify-center items-center" class:opacity-30={bookmarked}>
     <DragButton
       title={$name}
       href={$bookmarkletLink}
