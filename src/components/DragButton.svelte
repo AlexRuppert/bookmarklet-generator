@@ -33,7 +33,6 @@
         e,
       })
     }
-    console.log(e)
   }
   const dispatch = createEventDispatcher()
 

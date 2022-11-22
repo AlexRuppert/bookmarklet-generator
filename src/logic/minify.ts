@@ -5,9 +5,7 @@ export function minifyCss(code: string): string {
 }
 
 export async function minifyJs(code: string): Promise<string> {
-  console.log('in: '+ code)
   const minifiedCode = (await minify(code, { mangle: false, compress: false }))
     .code
-  console.log('out: '+ minifiedCode)
   return minifiedCode
 }
