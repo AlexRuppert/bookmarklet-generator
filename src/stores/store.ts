@@ -34,13 +34,14 @@ css.subscribe(async css => {
   updateBookmarklet()
 })
 let minifyJs
+let minifyCss
 scriptRaw.subscribe(async scriptRaw => {
   if (scriptRaw || get(script)) {
     minifyJs = minifyJs || (await import('../logic/minify')).minifyJs
     script.set(await minifyJs(scriptRaw))
   }
 })
-let minifyCss
+
 cssRaw.subscribe(async cssRaw => {
   if (cssRaw || get(css)) {
     minifyCss = minifyCss || (await import('../logic/minify')).minifyCss
