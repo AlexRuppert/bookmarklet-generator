@@ -1,5 +1,5 @@
-import { minifyCss, minifyJs } from '../logic/minify'
-import { writable,  get } from 'svelte/store'
+import { minifyCss } from '../logic/minify'
+import { writable, get } from 'svelte/store'
 import { debounce } from 'throttle-debounce'
 import { getParametersFromUrl, setParametersToUrl } from '../logic/url'
 import { getBookmarkletLink } from '../logic/bookmarklet'
@@ -13,35 +13,43 @@ export const editMode = writable(false)
 
 const updateUrlParameters = debounce(500, setParametersToUrl)
 const updateBookmarklet = debounce(300, setBookmarkletLink)
+function getCurrentState() {
+  return { name: get(name), script: get(script), css: get(css) }
+}
+
 function setBookmarkletLink() {
   bookmarkletLink.set(getBookmarkletLink(get(name), get(script), get(css)))
 }
 name.subscribe(async name => {
-  updateUrlParameters({ name })
+  updateUrlParameters({ ...getCurrentState(), name })
   updateBookmarklet()
 })
 
 script.subscribe(async script => {
-  updateUrlParameters({ script })
+  updateUrlParameters({ ...getCurrentState(), script })
   updateBookmarklet()
 })
 
 css.subscribe(async css => {
-  updateUrlParameters({ css })
+  updateUrlParameters({ ...getCurrentState(), css })
   updateBookmarklet()
 })
-
+let minifyJs
 scriptRaw.subscribe(async scriptRaw => {
-  script.set(minifyJs(scriptRaw))
+  if (scriptRaw || get(script)) {
+    console.log(minifyJs)
+    minifyJs = minifyJs || (await import('../logic/minify')).minifyJs
+    script.set(await minifyJs(scriptRaw))
+  }
 })
 
 cssRaw.subscribe(async cssRaw => {
-  css.set(minifyCss(cssRaw))
+  if (cssRaw || get(css)) {
+    css.set(minifyCss(cssRaw))
+  }
 })
 
 const startParameters = getParametersFromUrl()
 name.set(startParameters.name)
 script.set(startParameters.script)
 css.set(startParameters.css)
-
-

@@ -1,7 +1,7 @@
 <script lang="ts">
   import Button from './Button.svelte'
   import { mdiNoteEditOutline, mdiGithub, mdiContentCopy } from '@mdi/js'
-  import { bookmarkletLink, editMode } from '../stores/store'
+  import { editMode } from '../stores/store'
 </script>
 
 <div
