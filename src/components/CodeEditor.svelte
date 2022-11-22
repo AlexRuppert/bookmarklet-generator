@@ -40,7 +40,7 @@
 <div class="flex bg-cool-gray-100 justify-end">
   <Button text="Format" icon={mdiFormatIndentIncrease} on:click={format} />
 </div>
-<div class="min-h-48 p-3 code-editor" bind:this={editorElement}>{code}</div>
+<div class="min-h-48 p-3 mb-16 code-editor" bind:this={editorElement}>{code}</div>
 
 <style>
   .code-editor {
