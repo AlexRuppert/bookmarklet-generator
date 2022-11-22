@@ -1,4 +1,3 @@
-import { minifyCss } from '../logic/minify'
 import { writable, get } from 'svelte/store'
 import { debounce } from 'throttle-debounce'
 import { getParametersFromUrl, setParametersToUrl } from '../logic/url'
@@ -37,14 +36,14 @@ css.subscribe(async css => {
 let minifyJs
 scriptRaw.subscribe(async scriptRaw => {
   if (scriptRaw || get(script)) {
-    console.log(minifyJs)
     minifyJs = minifyJs || (await import('../logic/minify')).minifyJs
     script.set(await minifyJs(scriptRaw))
   }
 })
-
+let minifyCss
 cssRaw.subscribe(async cssRaw => {
   if (cssRaw || get(css)) {
+    minifyCss = minifyCss || (await import('../logic/minify')).minifyCss
     css.set(minifyCss(cssRaw))
   }
 })
